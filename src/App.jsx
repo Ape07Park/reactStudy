@@ -10,10 +10,24 @@ import Post from './components/Post';
 
 // Post의 jsx를 반환
 // 대문자로 시작하는 태그를 커스텀 컴포넌트로 인식함
+
+
+
 function App() {
-  return (
-    <Post/>
-  );
+
+    // 최상위 컴포넌트가 무조건 1개 필요함. 빈태그도 가능
+// 여러 번 연속해서 사용할 땐 상위 컴포넌트로 감싸야함
+    return (
+        // 추가된 컴포넌트 하나당 한번 실행. 재사용이 아님
+        <main>
+            <Post auther="sungMIn" body="react is good"/>
+            <Post auther="yoon" body="react is awesome"/>
+            <Post/>
+        </main>
+
+    );
+
+
 }
 
 export default App;
