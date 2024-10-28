@@ -1,4 +1,7 @@
 
+// classes는 객체의 이름이 됨. 따라서 css 파일의 속성을 부를 때 classes.post 등으로 부르면 됨
+import classes from './Post.module.css';
+
 /**
  * 
  * 컴포넌트를 만들더라도 다른 컴포넌트인 JSX 코드에서 호출이 필요
@@ -19,14 +22,15 @@ function Post(props) {
   //   리엑트는 스타일을 입힐 때 " " 대신 { } 사용
     // 스타일 속성에 값을 자바스크립트로 전달
   return (
-    <div>
+    //   class 를 넣고 싶으면 className을 사용
+    <li className={classes.post}>
       {/*  태그 안에 자바스크립트를 쓰고 싶다면 { } 안에 넣기 ex) <p>{2 + 2} </p> */}
       {/*<p>{chosenName}</p>*/}
       {/*<p>React is awesome!</p>*/}
 
-        <p>{props.auther}</p>
-        <p>{props.body}</p>
-    </div>
+        <p className={classes.author}>{props.auther}</p>
+        <p className={classes.text}>{props.body}</p>
+    </li>
   );
 }
 
