@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Post from './components/Post';
+import PostsList from './components/PostsList';
 
 // jsx 코드를 반환하기만 함
 // 여기있는 걸 리엑트 컴포넌트라고 함, 컴포넌트는 jsx 코드를 반환하는 함수
@@ -20,9 +21,11 @@ function App() {
     return (
         // 추가된 컴포넌트 하나당 한번 실행. 재사용이 아님
         <main>
-            <Post auther="sungMIn" body="react is good"/>
-            <Post auther="yoon" body="react is awesome"/>
-            <Post/>
+            {/*<Post auther="sungMIn" body="react is good"/>*/}
+            {/*<Post auther="yoon" body="react is awesome"/>*/}
+            {/*<Post/>*/}
+
+            <PostsList />
         </main>
 
     );
