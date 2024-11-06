@@ -22,9 +22,7 @@ function PostsList({isPosting, onStopPosting}) {
         setEnteredName(e.target.value);
     }
 
-
-
-    let modalContent;
+    // let modalContent;
 
     // if (modalIsVisible) {
     //     modalContent =  <Modal onClose={hideModalHandler}> {/*반환값 전달을 원하면 함수이름 () 로 쓰기 ex) hideModalHandler(). 함수전달이면 함수 이름만*/}
