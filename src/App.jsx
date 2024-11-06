@@ -3,6 +3,7 @@ import './App.css';
 import Post from './components/Post';
 import PostsList from './components/PostsList';
 import MainHeader from "./components/MainHeader";
+import {useState} from "react";
 
 // jsx 코드를 반환하기만 함
 // 여기있는 걸 리엑트 컴포넌트라고 함, 컴포넌트는 jsx 코드를 반환하는 함수
@@ -16,6 +17,16 @@ import MainHeader from "./components/MainHeader";
 
 function App() {
 
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+
+    function hideModalHandler() {
+        setModalIsVisible(false);
+    }
+
+   function showModalHandler() {
+        setModalIsVisible(true);
+    }
+
     // 최상위 컴포넌트가 무조건 1개 필요함. 빈태그도 가능
 // 여러 번 연속해서 사용할 땐 상위 컴포넌트로 감싸야함
     return (
@@ -23,13 +34,14 @@ function App() {
         <>
 
 
-            <MainHeader/>
+            <MainHeader onCreatePost={showModalHandler}/>
             <main>
                 {/*<Post auther="sungMIn" body="react is good"/>*/}
                 {/*<Post auther="yoon" body="react is awesome"/>*/}
                 {/*<Post/>*/}
 
-                <PostsList/>
+                <PostsList isPosting={modalIsVisible}
+                           onStopPosting={hideModalHandler}/>
             </main>
         </>
     );

@@ -4,7 +4,7 @@ import NewPost from './NewPost';
 import {useState} from 'react';
 import Modal from "./Modal";
 
-function PostsList() {
+function PostsList({isPosting, onStopPosting}) {
     const [modalIsVisible, setModalIsVisible] = useState(true)
     
     const [enteredBody, setEnteredBody] = useState('')
@@ -21,6 +21,8 @@ function PostsList() {
     function nameChangeHandler(e) {
         setEnteredName(e.target.value);
     }
+
+
 
     let modalContent;
 
@@ -50,14 +52,17 @@ function PostsList() {
             {/*{modalContent}*/}
 
             {/*modalIsVisible이 true일 때만 출력이 됨*/}
-            {modalIsVisible &&
-                <Modal onClose={hideModalHandler}> {/*반환값 전달을 원하면 함수이름 () 로 쓰기 ex) hideModalHandler(). 함수전달이면 함수 이름만*/}
+            {/* 값을 이리저리 여러 컴포넌트에 왔다갔다 하는 이유는 그 값을 원하는 컴포넌트에서 사용하기 위함*/}
+            {isPosting &&
+                <Modal onClose={onStopPosting}> {/*반환값 전달을 원하면 함수이름 () 로 쓰기 ex) hideModalHandler(). 함수전달이면 함수 이름만*/}
                              <NewPost
                                     onBodyChange={bodyChangeHandler}
                                     onNameChange={nameChangeHandler}
                                 />
                             </Modal>
             }
+
+
             <ul className={classes.post}>
                     {/*App은 PostList를 부르고  PostList는*/}
                     {/*Post 컴포넌트로 auther,  body를 보낸다*/}
