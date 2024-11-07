@@ -4,7 +4,7 @@ import { useState } from 'react';
 // 웹사이트에는 상태라는 것이 있을 수 있는데 랜더링 된 후 그 상태를 조작할 수 있음
 // 상태를 바꿀려면 먼저 상태를 등록하고 이벤트 리스너를 만들어서 그 상태가 무엇인지 리엑트에 알려야함
 
-function NewPost({onCancel}) {
+function NewPost({onCancel, onAddPost}) {
 
   // // useState: 상태 변경 리엑트 훅. 첫 인자에는 처음에 랜더링 되었을 때의 값
   // const [enteredBody, setEnteredBody] = useState(''); // 값을 새롭게 할당할 필요가 없어서 const를 사용
@@ -35,6 +35,7 @@ function NewPost({onCancel}) {
             author: enteredName
         }
         console.log(postData);
+        onAddPost(postData);
         onCancel() // 함수를 값으로 받는 프로퍼티임 따라서 함수처럼 실행 O.  onCancel 프로퍼티에 값으로 들어온 함수가 실행됨. onCancel이 받는게 hideModalHandler
     }
 
