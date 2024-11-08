@@ -1,17 +1,49 @@
 import classes from './PostList.module.css';
 import Post from "./Post";
 import NewPost from './NewPost';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Modal from "./Modal";
 
+// async를 붙이면 모든 게 프로미스로 래핑되어 반환됨
 function PostsList({isPosting, onStopPosting}) {
     // const [modalIsVisible, setModalIsVisible] = useState(true)
+    // * 아래의 코드는 리엑트가 상태를 자동으로 갱신할 때마다 컴포넌트 함수가 실행되고 이에 따라 fetch도 계속 실행됨 따라서 안좋음
+    //  fetch('http://localhost:8080/posts')
+    //      // response.json()으로 json을 자바스크립트 객체로 변환
+    //      .then(response => response.json())
+    //      .then(data => {
+    //          setPosts(data.posts);
+    //      })
+
+    // 부수 효과를 이용해 jsx 코드에 영향을 주지 않고 UI 랜더링과 관련이 없는 작업을 하는 경우에 사용
+    // useEffect : 부수 효과를 래핑하는데 사용함. 효과가 실행되어야 한다고 판단되면 알아서 실행함
+    // 첫 인자는 함수를 두 번째 인자는 배열을 받음
+
+    // useEffect의 함수가 프로미스를 반환하지 않도록 하기 위해 fetchPosts에 async를 걸음
+    // useEffect가 아무것도 반환하지 않거나 클린업 함수만 반환해야 함
+    useEffect(() => {
+        // 효과 함수 안에 있어 비동기적으로 작동함
+        async function fetchPosts() {
+            const res = await fetch('http://localhost:8080/posts')
+            // response.json()으로 json을 자바스크립트 객체로 변환
+            const resData = await res.json();
+            setPosts(resData.posts);
+        }
+    }, []);
 
     // 포스트 목록의 상태 관리
     const [posts, setPosts] = useState([]);
 
     // 배열에 추가하는 형태로해서 이전의 것이 사라지지 않도록 할 것임
     function addPostHandler(postData) {
+
+        fetch('http://localhost:8080/posts', {
+            method: 'POST',
+            body: JSON.stringify(postData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         // 새 상태 정의 시 함수 넘길 것, setPosts 실행할 때마다 리엑트에 의해 자동 호출
         // 이전 상태의 스냅샷을 가져오고 거기서 추가 이유는 다른 것들이 엮여 재대로 된 것을 못가져올 수도 있어서
         setPosts((existingPosts) => [postData, ...existingPosts]);
