@@ -4,6 +4,7 @@ import NewPost from './NewPost';
 import {useEffect, useState} from 'react';
 import Modal from "./Modal";
 
+
 // async를 붙이면 모든 게 프로미스로 래핑되어 반환됨
 function PostsList({isPosting, onStopPosting}) {
     // const [modalIsVisible, setModalIsVisible] = useState(true)
@@ -15,24 +16,35 @@ function PostsList({isPosting, onStopPosting}) {
     //          setPosts(data.posts);
     //      })
 
+    // 포스트 목록의 상태 관리
+    const [posts, setPosts] = useState([]);
+    const [isfetching, setIsfetching] = useState(false);
+    const [isOk, setIsOk] = useState(true);
     // 부수 효과를 이용해 jsx 코드에 영향을 주지 않고 UI 랜더링과 관련이 없는 작업을 하는 경우에 사용
     // useEffect : 부수 효과를 래핑하는데 사용함. 효과가 실행되어야 한다고 판단되면 알아서 실행함
-    // 첫 인자는 함수를 두 번째 인자는 배열을 받음
+    // 첫 인자는 함수를 두 번째 인자는 useEffect 바깥에 있는 것을 받음. useEffect의 발동 조건은 두 번째 인자가 변경될 때마다 작동함. 빈 배열은 의존성이 없다는 뜻 따라서 2번 실행 x
+    // []이면 처음 컴포넌트가 랜더링될 때만 효과함수 발동
 
     // useEffect의 함수가 프로미스를 반환하지 않도록 하기 위해 fetchPosts에 async를 걸음
     // useEffect가 아무것도 반환하지 않거나 클린업 함수만 반환해야 함
     useEffect(() => {
         // 효과 함수 안에 있어 비동기적으로 작동함
         async function fetchPosts() {
+            setIsfetching(true);
             const res = await fetch('http://localhost:8080/posts')
             // response.json()으로 json을 자바스크립트 객체로 변환
             const resData = await res.json();
+            if(!resData) {
+                setIsOk(false);
+            }
             setPosts(resData.posts);
+            setIsfetching(false);
         }
+
+        fetchPosts();
+
     }, []);
 
-    // 포스트 목록의 상태 관리
-    const [posts, setPosts] = useState([]);
 
     // 배열에 추가하는 형태로해서 이전의 것이 사라지지 않도록 할 것임
     function addPostHandler(postData) {
@@ -91,7 +103,7 @@ function PostsList({isPosting, onStopPosting}) {
                     />
                 </Modal>
             )}
-            {posts.length > 0 && (
+            {!isfetching && posts.length > 0 && (
                 <ul className={classes.post}>
                     {/*App은 PostList를 부르고  PostList는*/}
                     {/*Post 컴포넌트로 auther,  body를 보낸다*/}
@@ -102,15 +114,26 @@ function PostsList({isPosting, onStopPosting}) {
                 </ul>
             )}
 
-
-            {posts.length === 0 && (<div style={{textAlign: "center", color: 'red'}}>
+            {!isfetching && posts.length === 0 && (<div style={{textAlign: "center", color: 'red'}}>
 
                     <h2>No posts yet. Please add a new post.</h2>
                 </div>
             )}
-        </>
 
-    );
-}
+            {isfetching && (
+                <div style={{textAlign: "center", color: 'red'}}>
+                    <p>Loading posts...</p>
+                </div>
+                    )}
 
-export default PostsList;
+                    {!isOk &&( <div style={{textAlign: "center", color: 'red'}}>
+
+                        <h2>fail</h2>
+                    </div>)}
+
+                </>
+
+            );
+            }
+
+            export default PostsList;
