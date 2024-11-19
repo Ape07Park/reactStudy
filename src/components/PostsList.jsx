@@ -1,12 +1,10 @@
 import classes from './PostList.module.css';
 import Post from "./Post";
-import NewPost from './NewPost';
 import {useEffect, useState} from 'react';
-import Modal from "./Modal";
 
 
 // async를 붙이면 모든 게 프로미스로 래핑되어 반환됨
-function PostsList({isPosting, onStopPosting}) {
+function PostsList() {
     // const [modalIsVisible, setModalIsVisible] = useState(true)
     // * 아래의 코드는 리엑트가 상태를 자동으로 갱신할 때마다 컴포넌트 함수가 실행되고 이에 따라 fetch도 계속 실행됨 따라서 안좋음
     //  fetch('http://localhost:8080/posts')
@@ -96,13 +94,7 @@ function PostsList({isPosting, onStopPosting}) {
 
             {/*modalIsVisible이 true일 때만 출력이 됨*/}
             {/* 값을 이리저리 여러 컴포넌트에 왔다갔다 하는 이유는 그 값을 원하는 컴포넌트에서 사용하기 위함*/}
-            {isPosting && (
-                <Modal onClose={onStopPosting}> {/*반환값 전달을 원하면 함수이름 () 로 쓰기 ex) hideModalHandler(). 함수전달이면 함수 이름만*/}
-                    <NewPost
-                        onCancel={onStopPosting} onAddPost={addPostHandler}
-                    />
-                </Modal>
-            )}
+
             {!isfetching && posts.length > 0 && (
                 <ul className={classes.post}>
                     {/*App은 PostList를 부르고  PostList는*/}

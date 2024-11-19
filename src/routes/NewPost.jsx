@@ -1,10 +1,12 @@
-import classes from './NewPost.module.css';
+import classes from '../components/NewPost.module.css';
 import { useState } from 'react';
+import Modal from '../components/Modal';
+import {Link} from "react-router-dom";
 
 // 웹사이트에는 상태라는 것이 있을 수 있는데 랜더링 된 후 그 상태를 조작할 수 있음
 // 상태를 바꿀려면 먼저 상태를 등록하고 이벤트 리스너를 만들어서 그 상태가 무엇인지 리엑트에 알려야함
 
-function NewPost({onCancel, onAddPost}) {
+function NewPost({ onAddPost}) {
 
   // // useState: 상태 변경 리엑트 훅. 첫 인자에는 처음에 랜더링 되었을 때의 값
   // const [enteredBody, setEnteredBody] = useState(''); // 값을 새롭게 할당할 필요가 없어서 const를 사용
@@ -36,28 +38,31 @@ function NewPost({onCancel, onAddPost}) {
         }
         console.log(postData);
         onAddPost(postData);
-        onCancel() // 함수를 값으로 받는 프로퍼티임 따라서 함수처럼 실행 O.  onCancel 프로퍼티에 값으로 들어온 함수가 실행됨. onCancel이 받는게 hideModalHandler
+         // 함수를 값으로 받는 프로퍼티임 따라서 함수처럼 실행 O.  onCancel 프로퍼티에 값으로 들어온 함수가 실행됨. onCancel이 받는게 hideModalHandler
     }
 
     // submit 이벤트: 폼이 전송되면 submit 이벤트가 트리거되고 브라우저는 HTTP 요청을 만들어 전송
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
-      <p>
-        <label htmlFor="body">Text</label>
-        {/* textarea에 이벤트 리스너를 등록함 */}
-        <textarea id="body" required rows={3} onChange={bodyChangeHandler}/>   {/* 입력값이 들어오면 안의 함수를 실행하라*/}
-      </p>
-      {/* <p>{enteredBody}</p> */}
-      <p>
-        <label htmlFor="name">Your name</label>
-        <input type="text" id="name" required onChange={nameChangeHandler}/>
-      </p>
+      <Modal>
+          <form className={classes.form} onSubmit={submitHandler}>
+              <p>
+                  <label htmlFor="body">Text</label>
+                  {/* textarea에 이벤트 리스너를 등록함 */}
+                  <textarea id="body" required rows={3} onChange={bodyChangeHandler}/> {/* 입력값이 들어오면 안의 함수를 실행하라*/}
+              </p>
+              {/* <p>{enteredBody}</p> */}
+              <p>
+                  <label htmlFor="name">Your name</label>
+                  <input type="text" id="name" required onChange={nameChangeHandler}/>
+              </p>
 
-        <p className={classes.actions}> </p>
-        <button>Submit</button>    {/* 버튼의 기본값은 submit임 */}
-        <button type="button" onClick={onCancel}>Cancel</button>
+              <p className={classes.actions}></p>
+              <button>Submit</button>
+              {/* 버튼의 기본값은 submit임 */}
+              <Link to=".." type="button" >Cancel</Link>
 
-    </form>
+          </form>
+      </Modal>
   );
 }
 
